@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Los Caballitos Esports | Palm Springs Middle School</title>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Self-Contained Tailwind Play CDN & Fallback Styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        caballitos: {
+                            purple: '#4c1d95',
+                            lightgreen: '#22c55e',
+                            darkgreen: '#14532d',
+                            brightgreen: '#4ade80',
+                            dark: '#090a0f',
+                            darker: '#030407',
+                        }
+                    },
+                    fontFamily: {
+                        orbitron: ['Orbitron', 'sans-serif'],
+                        rajdhani: ['Rajdhani', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #030407;
+            color: #f8fafc;
+            font-family: 'Rajdhani', sans-serif;
+            overflow-x: hidden;
+        }
+        .glow-green {
+            box-shadow: 0 0 25px rgba(34, 197, 94, 0.35);
+        }
+        .glow-purple {
+            box-shadow: 0 0 25px rgba(124, 58, 237, 0.25);
+        }
+        .text-glow-green {
+            text-shadow: 0 0 12px rgba(74, 222, 128, 0.6);
+        }
+        .card-glass {
+            background: rgba(9, 10, 15, 0.92);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(76, 29, 149, 0.3);
+        }
+        .hero-bg {
+            background: linear-gradient(180deg, rgba(3, 4, 7, 0.6) 0%, rgba(3, 4, 7, 1) 100%),
+                        radial-gradient(circle at 50% 25%, rgba(76, 29, 149, 0.4) 0%, rgba(3, 4, 7, 0.95) 70%);
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #030407;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #22c55e;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4ade80;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-caballitos-lightgreen selection:text-black">
+
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 w-full z-40 card-glass border-b border-caballitos-purple/30 px-4 lg:px-8 py-3.5 transition-all">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <a href="#" class="flex items-center space-x-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-caballitos-purple to-caballitos-lightgreen p-0.5 flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
+                    <div class="w-full h-full bg-caballitos-darker rounded-[10px] flex items-center justify-center">
+                        <i class="fa-solid fa-horse-head text-caballitos-brightgreen text-lg"></i>
+                    </div>
+                </div>
+                <div>
+                    <span class="font-orbitron font-black text-base lg:text-lg text-white tracking-wider block leading-none">LOS CABALLITOS</span>
+                    <span class="text-[9px] text-caballitos-brightgreen font-semibold tracking-widest uppercase">Palm Springs Middle School</span>
+                </div>
+            </a>
+
+            <!-- Navigation Links with Smooth Jump Anchor Targets -->
+            <div class="hidden md:flex items-center space-x-6 font-orbitron text-xs font-bold uppercase tracking-wider">
+                <a href="#news-hub" class="text-slate-300 hover:text-caballitos-brightgreen transition-colors">News Feed</a>
+                <a href="#games-section" class="text-slate-300 hover:text-caballitos-brightgreen transition-colors">Games</a>
+                <a href="#roster" class="text-slate-300 hover:text-caballitos-brightgreen transition-colors">Roster</a>
+                <a href="#schedule" class="text-slate-300 hover:text-caballitos-brightgreen transition-colors">Schedule</a>
+            </div>
+
+            <!-- Admin Action Triggers -->
+            <div>
+                <button id="nav-admin-btn" onclick="openAdminModal()" class="px-4 py-2 rounded-xl bg-caballitos-purple/30 hover:bg-caballitos-purple/60 border border-caballitos-purple text-white font-orbitron font-bold text-xs uppercase tracking-wider transition-all flex items-center space-x-2 glow-purple">
+                    <i id="nav-admin-icon" class="fa-solid fa-user-shield text-caballitos-brightgreen"></i>
+                    <span id="admin-btn-text">Admin Login</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main View Content Area Layout -->
+    <main class="flex-grow pt-20">
+
+        <!-- Hero Section Banner Display -->
+        <section class="relative min-h-[75vh] flex items-center justify-center hero-bg px-4 py-12 text-center">
+            <div class="max-w-4xl mx-auto space-y-6">
+                <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-caballitos-lightgreen/10 border border-caballitos-lightgreen/30 text-caballitos-brightgreen text-xs font-bold font-orbitron uppercase tracking-widest shadow-inner">
+                    <i class="fa-solid fa-gamepad animate-pulse"></i>
+                    <span>Official PSMS Esports Portal</span>
+                </div>
+
+                <h1 class="font-orbitron font-black text-4xl sm:text-6xl md:text-7xl text-white uppercase tracking-tight leading-none">
+                    DOMINATE THE <span class="text-transparent bg-clip-text bg-gradient-to-r from-caballitos-brightgreen via-green-400 to-purple-500 text-glow-green">ARENA</span>
+                </h1>
+
+                <p class="text-slate-300 text-base sm:text-xl max-w-2xl mx-auto font-medium leading-relaxed">
+                    Welcome to the official digital hub of <strong class="text-white">Los Caballitos Esports</strong> at Palm Springs Middle School. Training champions, building strategy, and pursuing excellence in competitive gaming.
+                </p>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+                    <a href="#schedule" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-caballitos-lightgreen hover:bg-caballitos-brightgreen text-caballitos-darker font-orbitron font-black text-sm uppercase tracking-wider transition-all transform hover:-translate-y-0.5 shadow-lg glow-green">
+                        <i class="fa-solid fa-calendar-days mr-2"></i> View Schedule
+                    </a>
+                    <a href="#games-section" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-caballitos-darker/80 hover:bg-caballitos-purple/40 border border-caballitos-purple text-white font-orbitron font-bold text-sm uppercase tracking-wider transition-all">
+                        <i class="fa-solid fa-gamepad mr-2"></i> Explore Games
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dynamic Admin Welcome Context Info Banner -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-10">
+            <div class="card-glass rounded-2xl p-6 border border-caballitos-lightgreen/40 glow-green flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 rounded-xl bg-caballitos-lightgreen/20 border border-caballitos-lightgreen/50 flex items-center justify-center text-caballitos-brightgreen text-2xl shadow-inner">
+                        <i class="fa-solid fa-bullhorn"></i>
+                    </div>
+                    <div>
+                        <h3 id="hub-welcome-title" class="font-orbitron font-bold text-white text-base">Club Notifications Terminal</h3>
+                        <p id="hub-welcome-desc" class="text-xs text-slate-300">Check practice schedules, match dates, and administrator updates below.</p>
+                    </div>
+                </div>
+                <div id="admin-status-badge" class="hidden">
+                    <span class="px-4 py-2 rounded-xl bg-caballitos-lightgreen/20 border border-caballitos-lightgreen text-caballitos-brightgreen text-xs font-orbitron font-bold uppercase tracking-wider flex items-center shadow-md">
+                        <i class="fa-solid fa-circle-check mr-2"></i>
+                        <span id="hub-btn-label">ADMIN MODE</span>
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Automated News Slide Component Widget -->
+        <section id="news-hub" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 w-full gap-4">
+                <div class="space-y-1">
+                    <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-caballitos-purple/30 border border-caballitos-purple text-purple-300 text-xs font-bold font-orbitron uppercase tracking-widest">
+                        <i class="fa-solid fa-newspaper"></i>
+                        <span>Live Broadcast Feed</span>
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-black font-orbitron text-white uppercase tracking-wider">News & Club Updates</h2>
+                </div>
+
+                <!-- Admin News Drawer Toggle Button -->
+                <div id="news-admin-action" class="hidden">
+                    <button onclick="toggleNewsEditDrawer()" class="px-5 py-2.5 rounded-xl bg-caballitos-lightgreen/20 hover:bg-caballitos-lightgreen/30 border border-caballitos-lightgreen text-caballitos-brightgreen font-orbitron font-bold text-xs uppercase tracking-wider transition-all flex items-center space-x-2 shadow-md">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                        <span>Update Current News</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Admin Slide Input Drawer Container -->
+            <div id="news-edit-drawer" class="max-h-0 overflow-hidden transition-all duration-500 ease-in-out mb-0">
+                <div class="card-glass rounded-2xl p-6 border border-caballitos-purple/60 space-y-4 shadow-2xl mb-6">
+                    <h3 class="font-orbitron font-bold text-sm text-caballitos-brightgreen uppercase tracking-wide flex items-center">
+                        <i class="fa-solid fa-sliders mr-2"></i> Publish Live News Carousel Slide
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-orbitron font-bold text-slate-300 uppercase mb-1">Classification Tag</label>
+                            <select id="news-tag-select" class="w-full bg-caballitos-darker border border-slate-700 rounded-xl px-4 py-2.5 text-white text-xs font-semibold focus:border-caballitos-purple focus:outline-none">
+                                <option value="Club update">Club update</option>
+                                <option value="Schedule update">Schedule update</option>
+                                <option value="Competition update">Competition update</option>
+                                <option value="News">News</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-orbitron font-bold text-slate-300 uppercase mb-1">Headline Title</label>
+                            <input id="news-title-input" type="text" placeholder="Enter headline title..." class="w-full bg-caballitos-darker border border-slate-700 rounded-xl px-4 py-2.5 text-white text-xs font-semibold focus:border-caballitos-purple focus:outline-none" />
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-orbitron font-bold text-slate-300 uppercase mb-1">Description Details</label>
+                        <textarea id="news-desc-input" rows="3" placeholder="Enter comprehensive notice text..." class="w-full bg-caballitos-darker border border-slate-700 rounded-xl px-4 py-2.5 text-white text-xs font-semibold focus:border-caballitos-purple focus:outline-none"></textarea>
+                    </div>
+                    <div class="flex justify-end">
+                        <button onclick="commitAdminNewsSlide()" class="px-6 py-2.5 rounded-xl bg-caballitos-lightgreen text-caballitos-darker font-orbitron font-bold text-xs uppercase tracking-wider hover:bg-caballitos-brightgreen transition-all shadow-md">
+                            Commit Live Broadcast
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- News Card Viewport Container -->
+            <div class="relative card-glass rounded-2xl border border-caballitos-purple/40 p-6 sm:p-10 shadow-2xl overflow-hidden">
+                <div id="news-carousel-frame" class="transition-all duration-300 ease-in-out space-y-4">
+                    <div class="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-caballitos-lightgreen/10 border border-caballitos-lightgreen/30 text-caballitos-brightgreen text-xs font-bold font-orbitron uppercase tracking-widest">
+                        <span id="carousel-tag">Club update</span>
+                    </div>
+                    <h3 id="carousel-title" class="font-orbitron font-black text-xl sm:text-2xl text-white uppercase tracking-wide">Welcome to the New Season!</h3>
+                    <p id="carousel-desc" class="text-slate-300 text-sm sm:text-base font-medium leading-relaxed max-w-4xl">The official web space is now active. Explore the links above to stay ahead of upcoming event blocks and matches.</p>
+                </div>
+
+                <!-- Carousel Navigation Controls -->
+                <div class="flex items-center justify-between mt-8 pt-6 border-t border-slate-800/80">
+                    <span class="text-xs text-slate-400 font-orbitron tracking-wider">Automated Rotation: <strong class="text-caballitos-brightgreen">40s Interval</strong></span>
+                    <div class="flex space-x-3">
+                        <button onclick="shiftNewsSlide(-1)" class="w-10 h-10 rounded-xl bg-caballitos-dark border border-caballitos-purple/50 text-white hover:bg-caballitos-purple/40 transition-colors flex items-center justify-center shadow-md">
+                            <i class="fa-solid fa-chevron-left text-xs"></i>
+                        </button>
+                        <button onclick="shiftNewsSlide(1)" class="w-10 h-10 rounded-xl bg-caballitos-dark border border-caballitos-purple/50 text-white hover:bg-caballitos-purple/40 transition-colors flex items-center justify-center shadow-md">
+                            <i class="fa-solid fa-chevron-right text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Games We Play Section -->
+        <section id="games-section" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div class="text-center mb-12 space-y-2">
+                <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-caballitos-purple/30 border border-caballitos-purple text-purple-300 text-xs font-bold font-orbitron uppercase tracking-widest">
+                    <i class="fa-solid fa-trophy"></i>
+                    <span>Competitive Divisions</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-black font-orbitron text-white uppercase tracking-wider">Games We Play</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-caballitos-brightgreen to-caballitos-purple mx-auto mt-2 rounded-full"></div>
+            </div>
+
+            <!-- Games Grid Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Game 1 -->
+                <div class="card-glass rounded-2xl p-6 border border-caballitos-purple/40 hover:border-caballitos-brightgreen transition-all duration-300 group shadow-xl">
+                    <div class="w-12 h-12 rounded-xl bg-caballitos-purple/20 border border-caballitos-purple/50 flex items-center justify-center text-caballitos-brightgreen text-xl mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h3 class="font-orbitron font-bold text-white text-lg mb-2">Apex Legends</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">Squad-based battle royale action with legend abilities and high-intensity tactical positioning.</p>
+                </div>
+
+                <!-- Game 2 -->
+                <div class="card-glass rounded-2xl p-6 border border-caballitos-purple/40 hover:border-caballitos-brightgreen transition-all duration-300 group shadow-xl">
+                    <div class="w-12 h-12 rounded-xl bg-caballitos-purple/20 border border-caballitos-purple/50 flex items-center justify-center text-caballitos-brightgreen text-xl mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-hand-fist"></i>
+                    </div>
+                    <h3 class="font-orbitron font-bold text-white text-lg mb-2">Super Smash Bros.</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">Intense platform brawling, combo execution, and ultimate final smashes on Nintendo Switch.</p>
+                </div>
+
+                <!-- Game 3 -->
+                <div class="card-glass rounded-2xl p-6 border border-caballitos-purple/40 hover:border-caballitos-brightgreen transition-all duration-300 group shadow-xl">
+                    <div class="w-12 h-12 rounded-xl bg-caballitos-purple/20 border border-caballitos-purple/50 flex items-center justify-center text-caballitos-brightgreen text-xl mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-crosshairs"></i>
+                    </div>
+                    <h3 class="font-orbitron font-bold text-white text-lg mb-2">Valorant</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">Precise gunplay, agent abilities, and strategic spike site plants and defusals.</p>
+                </div>
+
+                <!-- Game 4 -->
+                <div class="card-glass rounded-2xl p-6 border border-caballitos-purple/40 hover:border-caballitos-brightgreen transition-all duration-300 group shadow-xl">
+                    <div class="w-12 h-12 rounded-xl bg-caballitos-purple/20 border border-caballitos-purple/50 flex items-center justify-center text-caballitos-brightgreen text-xl mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-flag-checkered"></i>
+                    </div>
+                    <h3 class="font-orbitron font-bold text-white text-lg mb-2">Mario Kart 8</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">High-speed drifting, item management, and 200cc track domination.</p>
+                </div>
+
+                <!-- Game 5 -->
+                <div class="card-glass rounded-2xl p-6 border border-caballitos-purple/40 hover:border-caballitos-brightgreen transition-all duration-300 group shadow-xl">
+                    <div class="w-12 h-12 rounded-xl bg-caballitos-purple/20 border border-caballitos-purple/50 flex items-center justify-center text-caballitos-brightgreen text-xl mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-car-side"></i>
+                    </div>
+                    <h3 class="font-orbitron font-bold text-white text-lg mb-2">Rocket League</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">Rocket-powered aerial goals, team passing plays, and competitive physics soccer.</p>
+                </div>
+
+                <!-- Game 6 -->
+                <div class="card-glass rounded-2xl p-6 border border-caballitos-purple/40 hover:border-caballitos-brightgreen transition-all duration-300 group shadow-xl">
+                    <div class="w-12 h-12 rounded-xl bg-caballitos-purple/20 border border-caballitos-purple/50 flex items-center justify-center text-caballitos-brightgreen text-xl mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <h3 class="font-orbitron font-bold text-white text-lg mb-2">Pokémon Unite</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">Strategic team battles, scoring points, and fierce Zapdos steals.</p>
+                </div>
+
+                <!-- Game 7 -->
+                <div class="card-glass rounded-2xl p-6 border border-caballitos-purple/40 hover:border-caballitos-brightgreen transition-all duration-300 group shadow-xl">
+                    <div class="w-12 h-12 rounded-xl bg-caballitos-purple/20 border border-caballitos-purple/50 flex items-center justify-center text-caballitos-brightgreen text-xl mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-mask"></i>
+                    </div>
+                    <h3 class="font-orbitron font-bold text-white text-lg mb-2">Marvel Rivals</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">Team-based superhero PvP action leveraging combined hero synergies and dynamic destructible environments.</p>
+                </div>
+
+                <!-- Game 8 -->
+                <div class="card-glass rounded-2xl p-6 border border-caballitos-purple/40 hover:border-caballitos-brightgreen transition-all duration-300 group shadow-xl">
+                    <div class="w-12 h-12 rounded-xl bg-caballitos-purple/20 border border-caballitos-purple/50 flex items-center justify-center text-caballitos-brightgreen text-xl mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-bullseye"></i>
+                    </div>
+                    <h3 class="font-orbitron font-bold text-white text-lg mb-2">Rainbow Six Siege</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">Tactical close-quarters combat, operator breaching gadgets, and defensive fortification strategies.</p>
+                </div>
+
+                <!-- Game 9 -->
+                <div class="card-glass rounded-2xl p-6 border border-caballitos-lightgreen/40 hover:border-caballitos-brightgreen transition-all duration-300 group shadow-xl bg-gradient-to-br from-caballitos-darker to-caballitos-purple/20">
+                    <div class="w-12 h-12 rounded-xl bg-caballitos-lightgreen/20 border border-caballitos-lightgreen/50 flex items-center justify-center text-caballitos-brightgreen text-xl mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-trophy"></i>
+                    </div>
+                    <h3 class="font-orbitron font-bold text-white text-lg mb-2">And Others</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">Always expanding our competitive repertoire across multiple platforms and fighting game tournaments.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Roster Section with Single-Active Smooth Accordion System -->
+        <section id="roster" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div class="text-center mb-10 space-y-2">
+                <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-caballitos-purple/30 border border-caballitos-purple text-purple-300 text-xs font-bold font-orbitron uppercase tracking-widest">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Team Directory</span>
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-black font-orbitron text-white uppercase tracking-wider">Club Membership</h2>
+                <div class="pt-2">
+                    <button onclick="toggleRosterMasterView()" id="roster-trigger-btn" class="px-6 py-3 rounded-xl bg-gradient-to-r from-caballitos-darkgreen to-caballitos-purple border border-caballitos-lightgreen/40 hover:border-caballitos-brightgreen text-white font-orbitron font-black text-xs uppercase tracking-widest transition-all transform hover:-translate-y-0.5 shadow-lg glow-green">
+                        <i class="fa-solid fa-folder-open mr-2"></i> View Team Roster
+                    </button>
+                </div>
+            </div>
+
+            <!-- Expandable Roster Container -->
+            <div id="roster-master-panel" class="max-h-0 overflow-hidden transition-all duration-700 ease-in-out max-w-3xl mx-auto bg-caballitos-darker/60 rounded-2xl">
+                <div class="border border-caballitos-purple/30 rounded-2xl overflow-hidden shadow-2xl">
+                    <div class="bg-caballitos-dark py-4 px-6 border-b border-caballitos-purple/40 font-orbitron font-bold text-sm tracking-wider text-white uppercase flex items-center justify-between">
+                        <span>The full roster</span>
+                        <span class="text-[10px] text-caballitos-brightgreen tracking-widest font-semibold px-2.5 py-1 rounded-full bg-caballitos-lightgreen/10 border border-caballitos-lightgreen/20">15 Active Members</span>
+                    </div>
+                    <ul class="divide-y divide-slate-900/60" id="roster-injected-list">
+                        <!-- Populated dynamically -->
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Calendar Schedule Section -->
+        <section id="schedule" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div class="text-center mb-10 space-y-2">
+                <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-caballitos-purple/30 border border-caballitos-purple text-purple-300 text-xs font-bold font-orbitron uppercase tracking-widest">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    <span>Official Schedule</span>
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-black font-orbitron text-white uppercase tracking-wider">
+                    SEPTEMBER <span class="text-caballitos-brightgreen">2026</span>
+                </h2>
+                <p id="admin-status-text" class="text-xs text-slate-400">View team meetings, tournaments dates, and club events below.</p>
+                <p id="admin-tip" class="text-xs text-caballitos-brightgreen font-bold hidden">💡 Click on any active date box to edit or clear schedule events.</p>
+            </div>
+
+            <!-- Calendar Container -->
+            <div class="card-glass rounded-2xl p-4 sm:p-6 border border-caballitos-purple/40 shadow-2xl">
+                <!-- Days of Week Header -->
+                <div class="grid grid-cols-7 gap-2 mb-3 text-center font-orbitron font-bold text-xs sm:text-sm text-caballitos-brightgreen uppercase tracking-wider border-b border-slate-800 pb-3">
+                    <div>Sun</div>
+                    <div>Mon</div>
+                    <div>Tue</div>
+                    <div>Wed</div>
+                    <div>Thu</div>
+                    <div>Fri</div>
+                    <div>Sat</div>
+                </div>
+
+                <!-- Interactive Calendar Grid -->
+                <div id="calendar-grid" class="grid grid-cols-7 gap-1.5 sm:gap-2.5">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Retro Neon Styled Footer -->
+    <footer class="border-t border-slate-900 bg-caballitos-darker py-10 px-4 text-center font-orbitron relative overflow-hidden">
+        <div class="max-w-7xl mx-auto space-y-6 relative z-10">
+            <div class="flex justify-center items-center gap-6">
+                <a href="https://www.instagram.com/los_caballitos_esports" target="_blank" class="w-11 h-11 rounded-xl bg-caballitos-dark border border-caballitos-purple text-slate-400 hover:text-pink-500 hover:border-pink-500/50 transition-all flex items-center justify-center text-lg shadow-md hover:scale-110">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="https://www.tiktok.com/@los_caballitos_esports" target="_blank" class="w-11 h-11 rounded-xl bg-caballitos-dark border border-caballitos-purple text-slate-400 hover:text-cyan-400 hover:border-cyan-400/50 transition-all flex items-center justify-center text-lg shadow-md hover:scale-110">
+                    <i class="fa-brands fa-tiktok"></i>
+                </a>
+            </div>
+            
+            <div class="space-y-1">
+                <p class="text-xs text-slate-400 tracking-wide">&copy; 2026 Los Caballitos Esports — Palm Springs Middle School. All Rights Reserved.</p>
+                <p class="text-[10px] text-slate-600 tracking-widest uppercase">Built with precision for esports excellence.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Application Script Engine -->
+    <script>
+        const activeAdmins = [
+            { name: "Reynold", code: "5R87GF" },
+            { name: "Byron Obregon", code: "3B5UY6" },
+            { name: "Navarro", code: "P4U9K3L1" },
+            { name: "Joshua F", code: "9T7U1AS" },
+            { name: "Jon Doe", code: "123456" }
+        ];
+
+        let failedLoginCount = 0;
+        let cooldownStageIndex = parseInt(localStorage.getItem('caballitos_lockdown_stage')) || 0;
+        let lockdownTimeoutTimestamp = parseInt(localStorage.getItem('caballitos_lockdown_timestamp')) || 0;
+        let activeLockdownCountdownTimer = null;
+        let currentInstanceRandomizedLimit = Math.floor(Math.random() * 5) + 1;
+
+        let activeNewsSlideIndex = 0;
+        let newsAutomaticTimerInterval = null;
+        let customNewsSlideData = [
+            { tag: "Club update", title: "Welcome to the New Season!", desc: "The official web space is now active. Explore the links above to stay ahead of upcoming event blocks and matches." },
+            { tag: "News", title: "Roster Portal Configuration", desc: "The official member directory list has been successfully uploaded. View details below to track active individual titles." },
+            { tag: "Schedule update", title: "September Practice Matrix", desc: "The team schedule layout maps all weekly training loops live. Admin overrides push updates automatically." }
+        ];
+
+        const staticRosterPool = [
+            { name: "Byron Obregon", games: ["Super Smash Bros. Ultimate", "Valorant", "Marvel Rivals", "Super Smash Bros. Ultimate", "Call of Duty", "Pokémon Unite", "Mario Kart 8"] },
+            { name: "Reynold P", games: [] },
+            { name: "Bryan H", games: ["Super Smash Bros. Ultimate"] },
+            { name: "Joshua F", games: ["Mario Kart 8", "Rocket League", "Pokémon Unite", "Brawlhalla"] },
+            { name: "Osvaldo M", games: ["Valorant", "Super Smash Bros. Ultimate"] },
+            { name: "Joshua M", games: [] },
+            { name: "Nicolas P", games: ["Super Smash Bros. Ultimate", "Mario Kart 8"] },
+            { name: "Jamelle J", games: ["NBA 2K", "Madden NFL", "Call of Duty"] },
+            { name: "Alexi H", games: ["Tom Clancy's Rainbow Six Siege", "Valorant", "Super Smash Bros. Ultimate", "Marvel Rivals"] },
+            { name: "Walter G", games: ["Super Smash Bros. Ultimate", "Mario Kart 8"] },
+            { name: "Hayes T", games: [] },
+            { name: "Freddie P", games: [] },
+            { name: "Jhonder C", games: [] },
+            { name: "Anthony A", games: [] },
+            { name: "Alejandro S", games: ["Rocket League", "Call of Duty", "Madden NFL", "Super Smash Bros. Ultimate"] }
+        ];
+
+        let isAdminLoggedIn = false;
+        let verifiedAdminSessionProfile = "";
+
+        const defaultScheduleNotes = {
+            '1': 'Meeting: 3:50 PM - 5:20 PM',
+            '8': 'Meeting: 3:50 PM - 5:20 PM',
+            '15': 'Meeting: 3:50 PM - 5:20 PM',
+            '22': 'Meeting: 3:50 PM - 5:20 PM',
+            '29': 'Meeting: 3:50 PM - 5:20 PM'
+        };
+
+        let storageScheduleData = JSON.parse(localStorage.getItem('caballitos_calendar_2026')) || defaultScheduleNotes;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            generateRosterDOMList();
+            renderLiveNewsSlide();
+            igniteNewsAutoPlayLoop();
+            buildCalendarGrid();
+            evaluateActiveStorageLockdownState();
+        });
+
+        function renderLiveNewsSlide() {
+            if (customNewsSlideData.length === 0) return;
+            const currentItem = customNewsSlideData[activeNewsSlideIndex];
+            
+            const frame = document.getElementById('news-carousel-frame');
+            if (frame) frame.style.opacity = '0';
+            
+            setTimeout(() => {
+                const tagEl = document.getElementById('carousel-tag');
+                const titleEl = document.getElementById('carousel-title');
+                const descEl = document.getElementById('carousel-desc');
+                
+                if (tagEl) tagEl.innerText = currentItem.tag;
+                if (titleEl) titleEl.innerText = currentItem.title;
+                if (descEl) descEl.innerText = currentItem.desc;
+                if (frame) frame.style.opacity = '1';
+            }, 250);
+        }
+
+        function shiftNewsSlide(direction) {
+            activeNewsSlideIndex += direction;
+            if (activeNewsSlideIndex >= customNewsSlideData.length) activeNewsSlideIndex = 0;
+            if (activeNewsSlideIndex < 0) activeNewsSlideIndex = customNewsSlideData.length - 1;
+            renderLiveNewsSlide();
+            igniteNewsAutoPlayLoop();
+        }
+
+        function igniteNewsAutoPlayLoop() {
+            clearInterval(newsAutomaticTimerInterval);
+            newsAutomaticTimerInterval = setInterval(() => {
+                shiftNewsSlide(1);
+            }, 40000);
+        }
+
+        function toggleNewsEditDrawer() {
+            const drawer = document.getElementById('news-edit-drawer');
+            if (!drawer) return;
+            if (drawer.style.maxHeight === '0px' || !drawer.style.maxHeight) {
+                drawer.style.maxHeight = drawer.scrollHeight + 'px';
+                drawer.style.marginBottom = '1.5rem';
+            } else {
+                drawer.style.maxHeight = '0px';
+                drawer.style.marginBottom = '0px';
+            }
+        }
+
+        function commitAdminNewsSlide() {
+            const selectedTag = document.getElementById('news-tag-select').value;
+            const titleInput = document.getElementById('news-title-input').value.trim();
+            const descInput = document.getElementById('news-desc-input').value.trim();
+
+            if (!titleInput || !descInput) {
+                openNotificationModal("⚠️ MISSING CONTEXT FIELD", "Please populate both the news headline title and description block text fields before broadcasting.");
+                return;
+            }
+
+            customNewsSlideData.push({ tag: selectedTag, title: titleInput, desc: descInput });
+            activeNewsSlideIndex = customNewsSlideData.length - 1;
+            renderLiveNewsSlide();
+            toggleNewsEditDrawer();
+            igniteNewsAutoPlayLoop();
+
+            document.getElementById('news-title-input').value = '';
+            document.getElementById('news-desc-input').value = '';
+        }
+
+        function toggleRosterMasterView() {
+            const panel = document.getElementById('roster-master-panel');
+            const btn = document.getElementById('roster-trigger-btn');
+            if (!panel || !btn) return;
+
+            if (panel.style.maxHeight === '0px' || !panel.style.maxHeight) {
+                panel.style.maxHeight = '3000px';
+                btn.innerHTML = `<i class="fa-solid fa-folder-minus mr-2"></i> Collapse Team Roster`;
+            } else {
+                panel.style.maxHeight = '0px';
+                btn.innerHTML = `<i class="fa-solid fa-folder-open mr-2"></i> View Team Roster`;
+                collapseAllPlayerAccordionRows();
+            }
+        }
+
+        function generateRosterDOMList() {
+            const targetList = document.getElementById('roster-injected-list');
+            if (!targetList) return;
+            targetList.innerHTML = '';
+
+            staticRosterPool.forEach((member, elementIdx) => {
+                const li = document.createElement('li');
+                li.className = 'player-accordion-row transition-all duration-300';
+                li.id = `player-idx-${elementIdx}`;
+
+                let dynamicInnerBody = '';
+                if (!member.games || member.games.length === 0) {
+                    dynamicInnerBody = `<p class="text-xs font-semibold text-slate-400 italic">Competitive Strategy Training Focus</p>`;
+                } else {
+                    dynamicInnerBody = `<h4 class="text-xs uppercase tracking-widest text-caballitos-brightgreen font-bold font-orbitron mb-2">Games im good at</h4>
+                              <ul class="space-y-1.5 text-slate-200 text-sm font-semibold pl-4 list-disc marker:text-caballitos-brightgreen">
+                                ${member.games.map(title => `<li>${title}</li>`).join('')}
+                              </ul>`;
+                }
+
+                li.innerHTML = `
+                    <div onclick="executeSingleAccordionToggle(${elementIdx})" class="w-full py-4 px-6 flex items-center justify-between cursor-pointer bg-caballitos-darker/40 hover:bg-caballitos-purple/15 transition-all">
+                        <span class="font-orbitron font-bold text-sm tracking-wide text-white">${member.name}</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-slate-400 transition-transform duration-300 accordion-arrow"></i>
+                    </div>
+                    <div class="accordion-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out bg-caballitos-darker/90 px-6">
+                        <div class="pb-5 pt-3 border-t border-slate-800/60">
+                          ${dynamicInnerBody}
+                        </div>
+                    </div>`;
+                targetList.appendChild(li);
+            });
+        }
+
+        function executeSingleAccordionToggle(targetIndex) {
+            const rows = document.querySelectorAll('.player-accordion-row');
+            rows.forEach((row, currentIdx) => {
+                const contentPanel = row.querySelector('.accordion-content');
+                const chevronArrow = row.querySelector('.accordion-arrow');
+
+                if (currentIdx === targetIndex) {
+                    if (row.classList.contains('active-row')) {
+                        row.classList.remove('active-row');
+                        contentPanel.style.maxHeight = '0px';
+                        chevronArrow.style.transform = 'rotate(0deg)';
+                    } else {
+                        row.classList.add('active-row');
+                        contentPanel.style.maxHeight = contentPanel.scrollHeight + 50 + 'px';
+                        chevronArrow.style.transform = 'rotate(180deg)';
+                        chevronArrow.classList.add('text-caballitos-brightgreen');
+                    }
+                } else {
+                    row.classList.remove('active-row');
+                    contentPanel.style.maxHeight = '0px';
+                    chevronArrow.style.transform = 'rotate(0deg)';
+                    chevronArrow.classList.remove('text-caballitos-brightgreen');
+                }
+            });
+        }
+
+        function collapseAllPlayerAccordionRows() {
+            const rows = document.querySelectorAll('.player-accordion-row');
+            rows.forEach(row => {
+                row.classList.remove('active-row');
+                const panel = row.querySelector('.accordion-content');
+                const arrow = row.querySelector('.accordion-arrow');
+                if (panel) panel.style.maxHeight = '0px';
+                if (arrow) {
+                    arrow.style.transform = 'rotate(0deg)';
+                    arrow.classList.remove('text-caballitos-brightgreen');
+                }
+            });
+        }
+
+        function buildCalendarGrid() {
+            const grid = document.getElementById('calendar-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            const cellMatrixConfiguration = [
+                { num: '30', mode: 'prev', key: '30_prev' }, { num: '31', mode: 'prev', key: '31_prev' },
+                { num: '1', mode: 'curr', key: '1' }, { num: '2', mode: 'curr', key: '2' },
+                { num: '3', mode: 'curr', key: '3' }, { num: '4', mode: 'curr', key: '4' },
+                { num: '5', mode: 'curr', key: '5' }, { num: '6', mode: 'curr', key: '6' },
+                { num: '7', mode: 'curr', key: '7' }, { num: '8', mode: 'curr', key: '8' },
+                { num: '9', mode: 'curr', key: '9' }, { num: '10', mode: 'curr', key: '10' },
+                { num: '11', mode: 'curr', key: '11' }, { num: '12', mode: 'curr', key: '12' },
+                { num: '13', mode: 'curr', key: '13' }, { num: '14', mode: 'curr', key: '14' },
+                { num: '15', mode: 'curr', key: '15' }, { num: '16', mode: 'curr', key: '16' },
+                { num: '17', mode: 'curr', key: '17' }, { num: '18', mode: 'curr', key: '18' },
+                { num: '19', mode: 'curr', key: '19' }, { num: '20', mode: 'curr', key: '20' },
+                { num: '21', mode: 'curr', key: '21' }, { num: '22', mode: 'curr', key: '22' },
+                { num: '23', mode: 'curr', key: '23' }, { num: '24', mode: 'curr', key: '24' },
+                { num: '25', mode: 'curr', key: '25' }, { num: '26', mode: 'curr', key: '26' },
+                { num: '27', mode: 'curr', key: '27' }, { num: '28', mode: 'curr', key: '28' },
+                { num: '29', mode: 'curr', key: '29' }, { num: '30', mode: 'curr', key: '30' },
+                { num: '1', mode: 'next', key: '1_next' }, { num: '2', mode: 'next', key: '2_next' },
+                { num: '3', mode: 'next', key: '3_next' }
+            ];
+
+            cellMatrixConfiguration.forEach(cell => {
+                const cellElement = document.createElement('div');
+                cellElement.className = `min-h-[100px] sm:min-h-[125px] p-2.5 rounded-xl border flex flex-col justify-between transition-all duration-200 ${
+                    cell.mode === 'curr' 
+                        ? 'bg-caballitos-darker/75 border-caballitos-purple/40 text-slate-100 hover:border-caballitos-lightgreen cursor-pointer' 
+                        : 'bg-caballitos-darker/20 border-slate-900/60 text-slate-600'
+                }`;
+
+                const headingWrapper = document.createElement('div');
+                headingWrapper.className = 'flex justify-between items-center';
+
+                const spanNum = document.createElement('span');
+                spanNum.className = `font-orbitron font-bold text-xs sm:text-sm ${cell.mode === 'curr' ? 'text-white' : 'text-slate-600'}`;
+                spanNum.innerText = cell.num;
+
+                headingWrapper.appendChild(spanNum);
+                cellElement.appendChild(headingWrapper);
+
+                const dataDiv = document.createElement('div');
+                dataDiv.className = 'mt-2 text-[10px] sm:text-xs font-semibold tracking-wide leading-tight';
+                const noteVal = storageScheduleData[cell.key] || '';
+
+                if (noteVal) {
+                    if (noteVal.includes('Meeting')) {
+                        dataDiv.className += ' px-1.5 py-1 rounded bg-caballitos-lightgreen/10 border border-caballitos-lightgreen/30 text-caballitos-brightgreen font-bold';
+                    } else {
+                        dataDiv.className += ' px-1.5 py-1 rounded bg-caballitos-purple/20 border border-caballitos-purple/30 text-purple-300';
+                    }
+                    dataDiv.innerText = noteVal;
+                }
+                cellElement.appendChild(dataDiv);
+
+                if (cell.mode === 'curr') {
+                    cellElement.onclick = () => {
+                        if (!isAdminLoggedIn) {
+                            openNotificationModal("🔒 AUTHENTICATION REQUIRED", "You must successfully complete administrator identity validation procedures to update structural calendar configurations.");
+                            return;
+                        }
+                        triggerAdminCalendarForm(cell.key, cell.num, storageScheduleData[cell.key] || '');
+                    };
+                }
+                grid.appendChild(cellElement);
+            });
+        }
+
+        function openAdminModal() {
+            if (isAdminLoggedIn) {
+                terminateAdminSession();
+                return;
+            }
+            if (Date.now() < lockdownTimeoutTimestamp) {
+                triggerLockoutAnimationAlert();
+                return;
+            }
+
+            clearActiveModalDOMElement();
+            const modal = document.createElement('div');
+            modal.id = 'global-security-modal';
+            modal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4';
+
+            modal.innerHTML = `
+                <div id="login-modal-shield-card" class="max-w-md w-full bg-caballitos-dark border border-caballitos-purple/60 rounded-2xl p-6 sm:p-8 space-y-6 glow-purple transition-all duration-300 shadow-2xl">
+                    <div class="text-center space-y-2">
+                        <h2 class="font-orbitron font-black text-white text-xl tracking-wider uppercase">Admin Login</h2>
+                        <p class="text-xs text-slate-400">Example format: Name: Jon Doe | Code: 123456</p>
+                    </div>
+                    <form onsubmit="processLoginAuthorizationAttempt(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-orbitron font-bold text-slate-300 uppercase mb-1">Name</label>
+                            <input id="auth-name-field" type="text" required class="w-full bg-caballitos-darker border border-slate-700 rounded-xl px-4 py-2.5 text-white text-sm focus:border-caballitos-purple focus:outline-none" />
+                        </div>
+                        <div>
+                            <label class="block text-xs font-orbitron font-bold text-slate-300 uppercase mb-1">Code</label>
+                            <input id="auth-code-field" type="password" required class="w-full bg-caballitos-darker border border-slate-700 rounded-xl px-4 py-2.5 text-white text-sm focus:border-caballitos-purple focus:outline-none" />
+                        </div>
+                        <button type="submit" class="w-full py-3 rounded-xl bg-caballitos-purple text-white font-orbitron font-bold text-xs uppercase tracking-widest hover:bg-purple-600 transition-all shadow-md">
+                            VERIFY & LOGIN
+                        </button>
+                    </form>
+                </div>`;
+            document.body.appendChild(modal);
+        }
+
+        function processLoginAuthorizationAttempt(e) {
+            e.preventDefault();
+            if (Date.now() < lockdownTimeoutTimestamp) {
+                triggerLockoutAnimationAlert();
+                return;
+            }
+
+            const enteredName = document.getElementById('auth-name-field').value.trim();
+            const enteredCode = document.getElementById('auth-code-field').value.trim();
+
+            const validSessionProfile = activeAdmins.find(admin =>
+                admin.name.toLowerCase() === enteredName.toLowerCase() && admin.code === enteredCode
+            );
+
+            if (validSessionProfile && enteredName.toLowerCase() !== "jon doe") {
+                isAdminLoggedIn = true;
+                verifiedAdminSessionProfile = validSessionProfile.name;
+                failedLoginCount = 0;
+                clearActiveModalDOMElement();
+                activateAdminPrivilegesDOMState(validSessionProfile.name);
+            } else {
+                failedLoginCount++;
+                executeIntrusiveFailureAnimation();
+            }
+        }
+
+        function executeIntrusiveFailureAnimation() {
+            const card = document.getElementById('login-modal-shield-card');
+
+            if (failedLoginCount >= currentInstanceRandomizedLimit) {
+                engageSecurityLockdownSequence();
+                return;
+            }
+
+            if (card) {
+                card.classList.remove('glow-purple');
+                card.classList.add('border-red-500', 'shadow-[0_0_30px_rgba(239,68,68,0.4)]');
+
+                card.animate([
+                    { transform: 'translateX(0px)' }, { transform: 'translateX(-8px)' },
+                    { transform: 'translateX(6px)' }, { transform: 'translateX(-6px)' },
+                    { transform: 'translateX(4px)' }, { transform: 'translateX(0px)' }
+                ], { duration: 250 });
+
+                setTimeout(() => {
+                    card.classList.remove('border-red-500', 'shadow-[0_0_30px_rgba(239,68,68,0.4)]');
+                    card.classList.add('glow-purple');
+                }, 600);
+
+                triggerFailureScreenNotification();
+            }
+        }
+
+        function triggerFailureScreenNotification() {
+            clearActiveModalDOMElement();
+            const alertOverlay = document.createElement('div');
+            alertOverlay.id = 'global-security-modal';
+            alertOverlay.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-md p-4';
+            alertOverlay.innerHTML = `
+                <div class="max-w-md w-full rounded-2xl p-6 sm:p-8 bg-caballitos-dark border border-red-500/60 shadow-[0_0_40px_rgba(239,68,68,0.3)] text-center space-y-6">
+                    <div class="flex justify-center">
+                        <div class="w-16 h-16 rounded-full bg-red-500/10 border border-red-500/40 flex items-center justify-center text-red-500 text-3xl animate-bounce">
+                            <i class="fa-solid fa-circle-xmark"></i>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="font-orbitron font-black text-red-400 text-base uppercase tracking-widest">✕ SECURITY REJECTION</h3>
+                        <p class="text-xs text-slate-300 font-medium leading-relaxed max-w-sm mx-auto">
+                            Sorry incorrect code or name please try again after a certain amount of times you'll be locked from attempting to log in as admin
+                        </p>
+                    </div>
+                    <button onclick="openAdminModal()" class="px-6 py-2.5 rounded-xl bg-red-500 text-white hover:bg-red-600 font-orbitron font-bold text-xs uppercase tracking-widest transition-all shadow-md">
+                        Acknowledge & Retry
+                    </button>
+                </div>`;
+            document.body.appendChild(alertOverlay);
+        }
+
+        function engageSecurityLockdownSequence() {
+            const timingMultipliersArray = [5, 10, 15, 30, 60, 120, 240];
+            const activePeriodMinutes = timingMultipliersArray[cooldownStageIndex] || 240;
+
+            if (cooldownStageIndex < timingMultipliersArray.length - 1) {
+                cooldownStageIndex++;
+            }
+
+            const delayIntervalDurationMilliseconds = activePeriodMinutes * 60 * 1000;
+            lockdownTimeoutTimestamp = Date.now() + delayIntervalDurationMilliseconds;
+
+            localStorage.setItem('caballitos_lockdown_timestamp', lockdownTimeoutTimestamp);
+            localStorage.setItem('caballitos_lockdown_stage', cooldownStageIndex);
+            triggerLockoutAnimationAlert();
+        }
+
+        function triggerLockoutAnimationAlert() {
+            clearActiveModalDOMElement();
+            const lockoutScreen = document.createElement('div');
+            lockoutScreen.id = 'global-security-modal';
+            lockoutScreen.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-xl p-4';
+            lockoutScreen.innerHTML = `
+                <div class="max-w-md w-full rounded-2xl p-6 sm:p-8 bg-caballitos-dark border border-red-600 shadow-[0_0_50px_rgba(220,38,38,0.4)] text-center space-y-6">
+                    <div class="flex justify-center">
+                        <div class="w-16 h-16 rounded-full bg-red-600/10 border border-red-600/30 flex items-center justify-center text-red-500 text-3xl animate-pulse">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="font-orbitron font-black text-red-500 text-lg tracking-wider uppercase">TERMINAL LOCKOUT ACTIVE</h3>
+                        <p class="text-xs text-slate-400 font-medium max-w-xs mx-auto leading-relaxed">
+                            Maximum authentication failures triggered. Access terminal capabilities are locked to enforce club policy systems protection requirements.
+                        </p>
+                    </div>
+                    <div class="bg-caballitos-darker border border-red-500/20 py-3 rounded-xl">
+                        <span class="text-[10px] text-slate-500 font-orbitron font-bold tracking-widest block uppercase mb-1">Time Remaining Before Clear</span>
+                        <div id="lockdown-countdown-timer-digits" class="font-orbitron text-xl font-black text-red-400 text-glow-green tracking-widest">00:00</div>
+                    </div>
+                    <button onclick="clearActiveModalDOMElement()" class="px-6 py-2 rounded-lg border border-slate-800 text-slate-500 hover:text-slate-300 font-semibold text-xs tracking-wider transition-colors">
+                        Close Display Shield
+                    </button>
+                </div>`;
+            document.body.appendChild(lockoutScreen);
+            igniteLockoutDigitsEngine();
+        }
+
+        function igniteLockoutDigitsEngine() {
+            clearInterval(activeLockdownCountdownTimer);
+            function processTick() {
+                const distance = lockdownTimeoutTimestamp - Date.now();
+                if (distance <= 0) {
+                    clearInterval(activeLockdownCountdownTimer);
+                    currentInstanceRandomizedLimit = Math.floor(Math.random() * 5) + 1;
+                    failedLoginCount = 0;
+                    localStorage.removeItem('caballitos_lockdown_timestamp');
+                    clearActiveModalDOMElement();
+                    openNotificationModal("🛡️ SECURITY CLEARANCE RESTORED", "Terminal security lockout interval completed successfully. Authentication mechanisms are operational.");
+                    return;
+                }
+                const totalSeconds = Math.floor(distance / 1000);
+                const hrs = Math.floor(totalSeconds / 3600);
+                const mins = Math.floor((totalSeconds % 3600) / 60);
+                const secs = totalSeconds % 60;
+                const displayString =
+                    (hrs > 0 ? String(hrs).padStart(2, '0') + ':' : '') +
+                    String(mins).padStart(2, '0') + ':' +
+                    String(secs).padStart(2, '0');
+
+                const targetDigits = document.getElementById('lockdown-countdown-timer-digits');
+                if (targetDigits) targetDigits.innerText = displayString;
+            }
+            processTick();
+            activeLockdownCountdownTimer = setInterval(processTick, 1000);
+        }
+
+        function evaluateActiveStorageLockdownState() {
+            const savedTimestamp = parseInt(localStorage.getItem('caballitos_lockdown_timestamp')) || 0;
+            const savedStage = parseInt(localStorage.getItem('caballitos_lockdown_stage')) || 0;
+            if (savedStage) cooldownStageIndex = savedStage;
+            if (savedTimestamp && Date.now() < savedTimestamp) {
+                lockdownTimeoutTimestamp = savedTimestamp;
+                igniteLockoutDigitsEngine();
+            }
+        }
+
+        function activateAdminPrivilegesDOMState(adminName) {
+            const adminBtnText = document.getElementById('admin-btn-text');
+            const navBtn = document.getElementById('nav-admin-btn');
+            const navIcon = document.getElementById('nav-admin-icon');
+            
+            if (adminBtnText) adminBtnText.innerText = `LOGOUT (${adminName.toUpperCase()})`;
+            if (navBtn) {
+                navBtn.classList.remove('bg-caballitos-purple/30', 'hover:bg-caballitos-purple/60', 'border-caballitos-purple', 'glow-purple');
+                navBtn.classList.add('bg-red-500/10', 'hover:bg-red-500/20', 'border-red-500/40');
+            }
+            if (navIcon) navIcon.className = 'fa-solid fa-power-off text-red-400';
+
+            document.getElementById('news-admin-action')?.classList.remove('hidden');
+            document.getElementById('admin-status-badge')?.classList.remove('hidden');
+            document.getElementById('admin-tip')?.classList.remove('hidden');
+
+            const statusText = document.getElementById('admin-status-text');
+            const hubTitle = document.getElementById('hub-welcome-title');
+            const hubDesc = document.getElementById('hub-welcome-desc');
+            const hubBtn = document.getElementById('hub-btn-label');
+
+            if (statusText) statusText.innerText = `Welcome back, ${adminName}! (Admin Mode Active)`;
+            if (hubTitle) hubTitle.innerText = `Welcome Back, ${adminName}!`;
+            if (hubDesc) hubDesc.innerText = `Admin authorization tokens validated. You have unlocked permissions to update meeting schedules and post dynamic updates directly.`;
+            if (hubBtn) hubBtn.innerText = `ADMIN WORKSPACE ACTIVE (${adminName.toUpperCase()})`;
+
+            buildCalendarGrid();
+        }
+
+        function terminateAdminSession() {
+            isAdminLoggedIn = false;
+            verifiedAdminSessionProfile = "";
+
+            const adminBtnText = document.getElementById('admin-btn-text');
+            const navBtn = document.getElementById('nav-admin-btn');
+            const navIcon = document.getElementById('nav-admin-icon');
+
+            if (adminBtnText) adminBtnText.innerText = "Admin Login";
+            if (navBtn) {
+                navBtn.classList.remove('bg-red-500/10', 'hover:bg-red-500/20', 'border-red-500/40');
+                navBtn.classList.add('bg-caballitos-purple/30', 'hover:bg-caballitos-purple/60', 'border-caballitos-purple', 'glow-purple');
+            }
+            if (navIcon) navIcon.className = 'fa-solid fa-user-shield text-caballitos-brightgreen';
+
+            document.getElementById('news-admin-action')?.classList.add('hidden');
+            const drawer = document.getElementById('news-edit-drawer');
+            if (drawer) {
+                drawer.style.maxHeight = '0px';
+                drawer.style.marginBottom = '0px';
+            }
+
+            document.getElementById('admin-status-badge')?.classList.add('hidden');
+            document.getElementById('admin-tip')?.classList.add('hidden');
+
+            const statusText = document.getElementById('admin-status-text');
+            const hubTitle = document.getElementById('hub-welcome-title');
+            const hubDesc = document.getElementById('hub-welcome-desc');
+
+            if (statusText) statusText.innerText = "View team meetings, scrimmage dates, and club events below.";
+            if (hubTitle) hubTitle.innerText = "Club Notifications Terminal";
+            if (hubDesc) hubDesc.innerText = "Check practice schedules, match dates, and administrator updates below.";
+
+            buildCalendarGrid();
+            openNotificationModal("🔒 SESSION TERMINATED", "You have successfully logged out of the administrator command dashboard.");
+        }
+
+        function triggerAdminCalendarForm(key, dayNum, textData) {
+            clearActiveModalDOMElement();
+            const formModal = document.createElement('div');
+            formModal.id = 'global-security-modal';
+            formModal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4';
+            formModal.innerHTML = `
+                <div class="max-w-md w-full bg-caballitos-dark border border-caballitos-purple rounded-2xl p-6 space-y-4 shadow-2xl">
+                    <h3 class="font-orbitron font-bold text-white text-base">Adjust Sept ${dayNum}, 2026</h3>
+                    <form onsubmit="commitCalendarStorageOverride(event, '${key}')" class="space-y-4">
+                        <div>
+                            <label class="block text-xs text-slate-400 font-semibold mb-1">Schedule Notes / Context Details</label>
+                            <input id="calendar-form-note-field" type="text" value="${textData}" class="w-full bg-caballitos-darker border border-slate-700 rounded-xl px-4 py-2 text-white text-sm focus:outline-none" />
+                        </div>
+                        <div class="flex gap-2 justify-end">
+                            <button type="button" onclick="eraseCalendarStorageNote('${key}')" class="px-4 py-2 rounded-xl bg-red-600/20 text-red-400 font-orbitron font-bold text-xs uppercase">CLEAR CELL</button>
+                            <button type="submit" class="px-4 py-2 rounded-xl bg-caballitos-purple text-white font-orbitron font-bold text-xs uppercase">SAVE RECORD</button>
+                        </div>
+                    </form>
+                </div>`;
+            document.body.appendChild(formModal);
+        }
+
+        function commitCalendarStorageOverride(e, storageKey) {
+            e.preventDefault();
+            const textValue = document.getElementById('calendar-form-note-field').value.trim();
+            if (textValue) {
+                storageScheduleData[storageKey] = textValue;
+            } else {
+                delete storageScheduleData[storageKey];
+            }
+            localStorage.setItem('caballitos_calendar_2026', JSON.stringify(storageScheduleData));
+            clearActiveModalDOMElement();
+            buildCalendarGrid();
+            openNotificationModal("✅ DATABASE SYNCHRONIZED", "The local calendar schedule repository notes have been successfully revised.");
+        }
+
+        function eraseCalendarStorageNote(storageKey) {
+            delete storageScheduleData[storageKey];
+            localStorage.setItem('caballitos_calendar_2026', JSON.stringify(storageScheduleData));
+            clearActiveModalDOMElement();
+            buildCalendarGrid();
+            openNotificationModal("🗑️ RECORD EXPUNGED", "The calendar schedule data note cell parameter has been wiped clean.");
+        }
+
+        function openNotificationModal(headerTitle, messageDesc) {	
+            clearActiveModalDOMElement();
+            const responseModal = document.createElement('div');
+            responseModal.id = 'global-security-modal';
+            responseModal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4';
+            responseModal.innerHTML = `
+                <div class="card-glass max-w-sm w-full rounded-2xl p-6 border border-caballitos-lightgreen/40 relative glow-green text-center space-y-4 shadow-2xl">
+                    <h3 class="text-sm font-black text-caballitos-brightgreen font-orbitron uppercase tracking-wider">${headerTitle}</h3>
+                    <p class="text-xs text-slate-300 font-medium leading-relaxed max-w-xs mx-auto">${messageDesc}</p>
+                    <button onclick="clearActiveModalDOMElement()" class="px-6 py-2 rounded-xl bg-caballitos-lightgreen hover:bg-caballitos-brightgreen text-caballitos-darker font-black text-[10px] uppercase font-orbitron tracking-widest transition-colors shadow-md">
+                        Acknowledge
+                    </button>
+                </div>`;
+            document.body.appendChild(responseModal);
+        }
+
+        function clearActiveModalDOMElement() {
+            const targetedModal = document.getElementById('global-security-modal');
+            if (targetedModal) targetedModal.remove();
+        }
+    </script>
+</body>
+</html>
