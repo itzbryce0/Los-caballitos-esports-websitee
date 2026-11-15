@@ -37,6 +37,32 @@
         }
     </script>
 
+    <!-- Firebase SDKs for Real-Time Live Sync -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getDatabase, ref, set, onValue, update } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+        // TODO: Replace with your actual Firebase project config credentials if needed
+        const firebaseConfig = {
+            apiKey: "AIzaSyDo1GZq0HTbSuiXm9yCGWErFheNncDtMj0",
+            authDomain: "los-caballitos-esports.firebaseapp.com",
+            databaseURL: "https://los-caballitos-esports-default-rtdb.firebaseio.com",
+            projectId: "los-caballitos-esports",
+            storageBucket: "Ylos-caballitos-esports.firebasestorage.app",
+            messagingSenderId: "607491779169",
+            appId: "1:607491779169:web:8a5c33bfcdd70f9b595820"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        window.dbInstance = db;
+        window.dbRef = ref;
+        window.dbSet = set;
+        window.dbOnValue = onValue;
+        window.dbUpdate = update;
+    </script>
+
     <style>
         body {
             background-color: #030407;
@@ -373,11 +399,11 @@
                     <i class="fa-solid fa-calendar-check"></i>
                     <span>Official Schedule</span>
                 </div>
-                <h2 class="text-2xl sm:text-3xl font-black font-orbitron text-white uppercase tracking-wider">
-                    SEPTEMBER <span class="text-caballitos-brightgreen">2026</span>
+                <h2 id="calendar-header-title" class="text-2xl sm:text-3xl font-black font-orbitron text-white uppercase tracking-wider">
+                    MONTH <span class="text-caballitos-brightgreen">2026</span>
                 </h2>
                 <p id="admin-status-text" class="text-xs text-slate-400">View team meetings, tournaments dates, and club events below.</p>
-                <p id="admin-tip" class="text-xs text-caballitos-brightgreen font-bold hidden">💡 Click on any active date box to edit or clear schedule events.</p>
+                <p id="admin-tip" class="text-xs text-caballitos-brightgreen font-bold hidden">💡 Click on any active Monday/Tuesday date box to edit or clear schedule events.</p>
             </div>
 
             <!-- Calendar Container -->
@@ -421,7 +447,7 @@
         </div>
     </footer>
 
-    <!-- Application Script Engine -->
+    <!-- Application Script Engine with Real-Time Firebase Live Sync -->
     <script>
         const activeAdmins = [
             { name: "Reynold", code: "5R87GF" },
@@ -440,9 +466,7 @@
         let activeNewsSlideIndex = 0;
         let newsAutomaticTimerInterval = null;
         let customNewsSlideData = [
-            { tag: "Club update", title: "Welcome to the New Season!", desc: "The official web space is now active. Explore the links above to stay ahead of upcoming event blocks and matches." },
-            { tag: "News", title: "Roster Portal Configuration", desc: "The official member directory list has been successfully uploaded. View details below to track active individual titles." },
-            { tag: "Schedule update", title: "September Practice Matrix", desc: "The team schedule layout maps all weekly training loops live. Admin overrides push updates automatically." }
+            { tag: "Club update", title: "Welcome to the New Season!", desc: "The official web space is now active. Explore the links above to stay ahead of upcoming event blocks and matches." }
         ];
 
         const staticRosterPool = [
@@ -464,29 +488,58 @@
         ];
 
         let isAdminLoggedIn = false;
-        let verifiedAdminSessionProfile = "";
-
-        const defaultScheduleNotes = {
-            '1': 'Meeting: 3:50 PM - 5:20 PM',
-            '8': 'Meeting: 3:50 PM - 5:20 PM',
-            '15': 'Meeting: 3:50 PM - 5:20 PM',
-            '22': 'Meeting: 3:50 PM - 5:20 PM',
-            '29': 'Meeting: 3:50 PM - 5:20 PM'
-        };
-
-        let storageScheduleData = JSON.parse(localStorage.getItem('caballitos_calendar_2026')) || defaultScheduleNotes;
+        let storageScheduleData = {};
 
         window.addEventListener('DOMContentLoaded', () => {
             generateRosterDOMList();
-            renderLiveNewsSlide();
-            igniteNewsAutoPlayLoop();
-            buildCalendarGrid();
             evaluateActiveStorageLockdownState();
+
+            // Connect to Firebase Realtime Database for live cross-user updates without refresh
+            const checkFirebaseReady = setInterval(() => {
+                if (window.dbInstance) {
+                    clearInterval(checkFirebaseReady);
+                    initializeRealtimeListeners();
+                }
+            }, 100);
         });
+
+        function initializeRealtimeListeners() {
+            const db = window.dbInstance;
+            const ref = window.dbRef;
+            const onValue = window.dbOnValue;
+
+            // Real-time listener for News Broadcasts
+            onValue(ref(db, 'caballitos/news'), (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    customNewsSlideData = data;
+                    renderLiveNewsSlide();
+                    igniteNewsAutoPlayLoop();
+                }
+            });
+
+            // Real-time listener for Schedule Updates
+            onValue(ref(db, 'caballitos/schedule'), (snapshot) => {
+                const data = snapshot.val();
+                storageScheduleData = data || {
+                    '1': 'Meeting: 3:50 PM - 5:20 PM',
+                    '2': 'Practice: 3:50 PM - 5:20 PM',
+                    '8': 'Meeting: 3:50 PM - 5:20 PM',
+                    '9': 'Practice: 3:50 PM - 5:20 PM',
+                    '15': 'Meeting: 3:50 PM - 5:20 PM',
+                    '16': 'Practice: 3:50 PM - 5:20 PM',
+                    '22': 'Meeting: 3:50 PM - 5:20 PM',
+                    '23': 'Practice: 3:50 PM - 5:20 PM',
+                    '29': 'Meeting: 3:50 PM - 5:20 PM',
+                    '30': 'Practice: 3:50 PM - 5:20 PM'
+                };
+                buildCalendarGrid();
+            });
+        }
 
         function renderLiveNewsSlide() {
             if (customNewsSlideData.length === 0) return;
-            const currentItem = customNewsSlideData[activeNewsSlideIndex];
+            const currentItem = customNewsSlideData[activeNewsSlideIndex] || customNewsSlideData[0];
             
             const frame = document.getElementById('news-carousel-frame');
             if (frame) frame.style.opacity = '0';
@@ -536,18 +589,21 @@
             const descInput = document.getElementById('news-desc-input').value.trim();
 
             if (!titleInput || !descInput) {
-                openNotificationModal("⚠️ MISSING CONTEXT FIELD", "Please populate both the news headline title and description block text fields before broadcasting.");
+                openNotificationModal("⚠️ MISSING CONTEXT FIELD", "Please populate both headline title and description fields.");
                 return;
             }
 
             customNewsSlideData.push({ tag: selectedTag, title: titleInput, desc: descInput });
-            activeNewsSlideIndex = customNewsSlideData.length - 1;
-            renderLiveNewsSlide();
-            toggleNewsEditDrawer();
-            igniteNewsAutoPlayLoop();
 
-            document.getElementById('news-title-input').value = '';
-            document.getElementById('news-desc-input').value = '';
+            // Push to Firebase so it updates live for all connected visitors instantly
+            window.dbSet(window.dbRef(window.dbInstance, 'caballitos/news'), customNewsSlideData).then(() => {
+                activeNewsSlideIndex = customNewsSlideData.length - 1;
+                renderLiveNewsSlide();
+                toggleNewsEditDrawer();
+                document.getElementById('news-title-input').value = '';
+                document.getElementById('news-desc-input').value = '';
+                openNotificationModal("📡 BROADCAST LIVE", "News update published successfully to all active viewers.");
+            });
         }
 
         function toggleRosterMasterView() {
@@ -639,75 +695,94 @@
             });
         }
 
+        // --- DYNAMIC REAL-WORLD CALENDAR ENGINE (MONDAY & TUESDAY FOCUSED) ---
         function buildCalendarGrid() {
             const grid = document.getElementById('calendar-grid');
+            const headerTitle = document.getElementById('calendar-header-title');
             if (!grid) return;
             grid.innerHTML = '';
 
-            const cellMatrixConfiguration = [
-                { num: '30', mode: 'prev', key: '30_prev' }, { num: '31', mode: 'prev', key: '31_prev' },
-                { num: '1', mode: 'curr', key: '1' }, { num: '2', mode: 'curr', key: '2' },
-                { num: '3', mode: 'curr', key: '3' }, { num: '4', mode: 'curr', key: '4' },
-                { num: '5', mode: 'curr', key: '5' }, { num: '6', mode: 'curr', key: '6' },
-                { num: '7', mode: 'curr', key: '7' }, { num: '8', mode: 'curr', key: '8' },
-                { num: '9', mode: 'curr', key: '9' }, { num: '10', mode: 'curr', key: '10' },
-                { num: '11', mode: 'curr', key: '11' }, { num: '12', mode: 'curr', key: '12' },
-                { num: '13', mode: 'curr', key: '13' }, { num: '14', mode: 'curr', key: '14' },
-                { num: '15', mode: 'curr', key: '15' }, { num: '16', mode: 'curr', key: '16' },
-                { num: '17', mode: 'curr', key: '17' }, { num: '18', mode: 'curr', key: '18' },
-                { num: '19', mode: 'curr', key: '19' }, { num: '20', mode: 'curr', key: '20' },
-                { num: '21', mode: 'curr', key: '21' }, { num: '22', mode: 'curr', key: '22' },
-                { num: '23', mode: 'curr', key: '23' }, { num: '24', mode: 'curr', key: '24' },
-                { num: '25', mode: 'curr', key: '25' }, { num: '26', mode: 'curr', key: '26' },
-                { num: '27', mode: 'curr', key: '27' }, { num: '28', mode: 'curr', key: '28' },
-                { num: '29', mode: 'curr', key: '29' }, { num: '30', mode: 'curr', key: '30' },
-                { num: '1', mode: 'next', key: '1_next' }, { num: '2', mode: 'next', key: '2_next' },
-                { num: '3', mode: 'next', key: '3_next' }
-            ];
+            // Automatically use the current real-world month and year
+            const now = new Date();
+            const currentYear = now.getFullYear();
+            const currentMonthIndex = now.getMonth(); 
+            const monthNames = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
+            const monthString = monthNames[currentMonthIndex];
 
-            cellMatrixConfiguration.forEach(cell => {
+            if (headerTitle) {
+                headerTitle.innerHTML = `${monthString} <span class="text-caballitos-brightgreen">${currentYear}</span>`;
+            }
+
+            // Get total days in the current real-world month
+            const totalDaysInMonth = new Date(currentYear, currentMonthIndex + 1, 0).getDate();
+            const firstDayOfWeek = new Date(currentYear, currentMonthIndex, 1).getDay(); // 0 = Sun, 1 = Mon, 2 = Tue, etc.
+
+            let cellCount = 0;
+
+            // Padding cells from previous month to align the first day correctly under Sun-Sat headers
+            for (let i = 0; i < firstDayOfWeek; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.className = 'min-h-[100px] sm:min-h-[125px] p-2.5 rounded-xl border bg-caballitos-darker/20 border-slate-900/60 text-slate-700';
+                emptyCell.innerHTML = `<div class="font-orbitron font-bold text-xs sm:text-sm text-slate-700">-</div>`;
+                grid.appendChild(emptyCell);
+                cellCount++;
+            }
+
+            // Real month days (Mon = 1, Tue = 2)
+            for (let day = 1; day <= totalDaysInMonth; day++) {
+                const dayOfWeekIndex = new Date(currentYear, currentMonthIndex, day).getDay();
+                const isMonOrTue = (dayOfWeekIndex === 1 || dayOfWeekIndex === 2);
+                const cellKey = String(day);
+
                 const cellElement = document.createElement('div');
                 cellElement.className = `min-h-[100px] sm:min-h-[125px] p-2.5 rounded-xl border flex flex-col justify-between transition-all duration-200 ${
-                    cell.mode === 'curr' 
-                        ? 'bg-caballitos-darker/75 border-caballitos-purple/40 text-slate-100 hover:border-caballitos-lightgreen cursor-pointer' 
-                        : 'bg-caballitos-darker/20 border-slate-900/60 text-slate-600'
+                    isMonOrTue
+                        ? 'bg-caballitos-darker/85 border-caballitos-purple/50 text-slate-100 hover:border-caballitos-lightgreen cursor-pointer shadow-md'
+                        : 'bg-caballitos-darker/40 border-slate-900/80 text-slate-500'
                 }`;
 
                 const headingWrapper = document.createElement('div');
                 headingWrapper.className = 'flex justify-between items-center';
 
                 const spanNum = document.createElement('span');
-                spanNum.className = `font-orbitron font-bold text-xs sm:text-sm ${cell.mode === 'curr' ? 'text-white' : 'text-slate-600'}`;
-                spanNum.innerText = cell.num;
+                spanNum.className = `font-orbitron font-bold text-xs sm:text-sm ${isMonOrTue ? 'text-white' : 'text-slate-500'}`;
+                spanNum.innerText = day;
 
                 headingWrapper.appendChild(spanNum);
                 cellElement.appendChild(headingWrapper);
 
                 const dataDiv = document.createElement('div');
                 dataDiv.className = 'mt-2 text-[10px] sm:text-xs font-semibold tracking-wide leading-tight';
-                const noteVal = storageScheduleData[cell.key] || '';
+                const noteVal = storageScheduleData[cellKey] || '';
 
                 if (noteVal) {
-                    if (noteVal.includes('Meeting')) {
+                    if (noteVal.includes('Meeting') || noteVal.includes('Practice')) {
                         dataDiv.className += ' px-1.5 py-1 rounded bg-caballitos-lightgreen/10 border border-caballitos-lightgreen/30 text-caballitos-brightgreen font-bold';
                     } else {
                         dataDiv.className += ' px-1.5 py-1 rounded bg-caballitos-purple/20 border border-caballitos-purple/30 text-purple-300';
                     }
                     dataDiv.innerText = noteVal;
+                } else if (isMonOrTue) {
+                    // Default placeholder for active Monday / Tuesday practice slots
+                    dataDiv.className += ' px-1.5 py-1 rounded bg-caballitos-purple/10 border border-caballitos-purple/20 text-slate-400 italic';
+                    dataDiv.innerText = dayOfWeekIndex === 1 ? 'Meeting: 3:50 PM - 5:20 PM' : 'Practice: 3:50 PM - 5:20 PM';
                 }
                 cellElement.appendChild(dataDiv);
 
-                if (cell.mode === 'curr') {
+                // Clicking only enabled on Mondays and Tuesdays for admins
+                if (isMonOrTue) {
                     cellElement.onclick = () => {
                         if (!isAdminLoggedIn) {
-                            openNotificationModal("🔒 AUTHENTICATION REQUIRED", "You must successfully complete administrator identity validation procedures to update structural calendar configurations.");
+                            openNotificationModal("🔒 AUTHENTICATION REQUIRED", "You must log in as an administrator to update Monday & Tuesday schedule sessions.");
                             return;
                         }
-                        triggerAdminCalendarForm(cell.key, cell.num, storageScheduleData[cell.key] || '');
+                        triggerAdminCalendarForm(cellKey, day, storageScheduleData[cellKey] || (dayOfWeekIndex === 1 ? 'Meeting: 3:50 PM - 5:20 PM' : 'Practice: 3:50 PM - 5:20 PM'));
                     };
                 }
+
                 grid.appendChild(cellElement);
-            });
+                cellCount++;
+            }
         }
 
         function openAdminModal() {
@@ -762,9 +837,8 @@
                 admin.name.toLowerCase() === enteredName.toLowerCase() && admin.code === enteredCode
             );
 
-            if (validSessionProfile && enteredName.toLowerCase() !== "jon doe") {
+            if (validSessionProfile) {
                 isAdminLoggedIn = true;
-                verifiedAdminSessionProfile = validSessionProfile.name;
                 failedLoginCount = 0;
                 clearActiveModalDOMElement();
                 activateAdminPrivilegesDOMState(validSessionProfile.name);
@@ -776,7 +850,6 @@
 
         function executeIntrusiveFailureAnimation() {
             const card = document.getElementById('login-modal-shield-card');
-
             if (failedLoginCount >= currentInstanceRandomizedLimit) {
                 engageSecurityLockdownSequence();
                 return;
@@ -785,18 +858,6 @@
             if (card) {
                 card.classList.remove('glow-purple');
                 card.classList.add('border-red-500', 'shadow-[0_0_30px_rgba(239,68,68,0.4)]');
-
-                card.animate([
-                    { transform: 'translateX(0px)' }, { transform: 'translateX(-8px)' },
-                    { transform: 'translateX(6px)' }, { transform: 'translateX(-6px)' },
-                    { transform: 'translateX(4px)' }, { transform: 'translateX(0px)' }
-                ], { duration: 250 });
-
-                setTimeout(() => {
-                    card.classList.remove('border-red-500', 'shadow-[0_0_30px_rgba(239,68,68,0.4)]');
-                    card.classList.add('glow-purple');
-                }, 600);
-
                 triggerFailureScreenNotification();
             }
         }
@@ -816,7 +877,7 @@
                     <div class="space-y-2">
                         <h3 class="font-orbitron font-black text-red-400 text-base uppercase tracking-widest">✕ SECURITY REJECTION</h3>
                         <p class="text-xs text-slate-300 font-medium leading-relaxed max-w-sm mx-auto">
-                            Sorry incorrect code or name please try again after a certain amount of times you'll be locked from attempting to log in as admin
+                            Incorrect credentials. Please try again. Multiple failures will lock admin access.
                         </p>
                     </div>
                     <button onclick="openAdminModal()" class="px-6 py-2.5 rounded-xl bg-red-500 text-white hover:bg-red-600 font-orbitron font-bold text-xs uppercase tracking-widest transition-all shadow-md">
@@ -829,14 +890,9 @@
         function engageSecurityLockdownSequence() {
             const timingMultipliersArray = [5, 10, 15, 30, 60, 120, 240];
             const activePeriodMinutes = timingMultipliersArray[cooldownStageIndex] || 240;
+            if (cooldownStageIndex < timingMultipliersArray.length - 1) cooldownStageIndex++;
 
-            if (cooldownStageIndex < timingMultipliersArray.length - 1) {
-                cooldownStageIndex++;
-            }
-
-            const delayIntervalDurationMilliseconds = activePeriodMinutes * 60 * 1000;
-            lockdownTimeoutTimestamp = Date.now() + delayIntervalDurationMilliseconds;
-
+            lockdownTimeoutTimestamp = Date.now() + (activePeriodMinutes * 60 * 1000);
             localStorage.setItem('caballitos_lockdown_timestamp', lockdownTimeoutTimestamp);
             localStorage.setItem('caballitos_lockdown_stage', cooldownStageIndex);
             triggerLockoutAnimationAlert();
@@ -857,14 +913,14 @@
                     <div class="space-y-2">
                         <h3 class="font-orbitron font-black text-red-500 text-lg tracking-wider uppercase">TERMINAL LOCKOUT ACTIVE</h3>
                         <p class="text-xs text-slate-400 font-medium max-w-xs mx-auto leading-relaxed">
-                            Maximum authentication failures triggered. Access terminal capabilities are locked to enforce club policy systems protection requirements.
+                            Maximum authentication failures reached. Access is temporarily locked.
                         </p>
                     </div>
                     <div class="bg-caballitos-darker border border-red-500/20 py-3 rounded-xl">
-                        <span class="text-[10px] text-slate-500 font-orbitron font-bold tracking-widest block uppercase mb-1">Time Remaining Before Clear</span>
-                        <div id="lockdown-countdown-timer-digits" class="font-orbitron text-xl font-black text-red-400 text-glow-green tracking-widest">00:00</div>
+                        <span class="text-[10px] text-slate-500 font-orbitron font-bold tracking-widest block uppercase mb-1">Time Remaining</span>
+                        <div id="lockdown-countdown-timer-digits" class="font-orbitron text-xl font-black text-red-400 tracking-widest">00:00</div>
                     </div>
-                    <button onclick="clearActiveModalDOMElement()" class="px-6 py-2 rounded-lg border border-slate-800 text-slate-500 hover:text-slate-300 font-semibold text-xs tracking-wider transition-colors">
+                    <button onclick="clearActiveModalDOMElement()" class="px-6 py-2 rounded-lg border border-slate-800 text-slate-500 hover:text-slate-300 font-semibold text-xs tracking-wider">
                         Close Display Shield
                     </button>
                 </div>`;
@@ -882,18 +938,14 @@
                     failedLoginCount = 0;
                     localStorage.removeItem('caballitos_lockdown_timestamp');
                     clearActiveModalDOMElement();
-                    openNotificationModal("🛡️ SECURITY CLEARANCE RESTORED", "Terminal security lockout interval completed successfully. Authentication mechanisms are operational.");
+                    openNotificationModal("🛡️ SECURITY RESTORED", "Lockout interval completed successfully.");
                     return;
                 }
                 const totalSeconds = Math.floor(distance / 1000);
                 const hrs = Math.floor(totalSeconds / 3600);
                 const mins = Math.floor((totalSeconds % 3600) / 60);
                 const secs = totalSeconds % 60;
-                const displayString =
-                    (hrs > 0 ? String(hrs).padStart(2, '0') + ':' : '') +
-                    String(mins).padStart(2, '0') + ':' +
-                    String(secs).padStart(2, '0');
-
+                const displayString = (hrs > 0 ? String(hrs).padStart(2, '0') + ':' : '') + String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
                 const targetDigits = document.getElementById('lockdown-countdown-timer-digits');
                 if (targetDigits) targetDigits.innerText = displayString;
             }
@@ -934,7 +986,7 @@
 
             if (statusText) statusText.innerText = `Welcome back, ${adminName}! (Admin Mode Active)`;
             if (hubTitle) hubTitle.innerText = `Welcome Back, ${adminName}!`;
-            if (hubDesc) hubDesc.innerText = `Admin authorization tokens validated. You have unlocked permissions to update meeting schedules and post dynamic updates directly.`;
+            if (hubDesc) hubDesc.innerText = `Admin authorization tokens validated. You have unlocked permissions to update Monday/Tuesday schedules and post dynamic updates directly.`;
             if (hubBtn) hubBtn.innerText = `ADMIN WORKSPACE ACTIVE (${adminName.toUpperCase()})`;
 
             buildCalendarGrid();
@@ -942,8 +994,6 @@
 
         function terminateAdminSession() {
             isAdminLoggedIn = false;
-            verifiedAdminSessionProfile = "";
-
             const adminBtnText = document.getElementById('admin-btn-text');
             const navBtn = document.getElementById('nav-admin-btn');
             const navIcon = document.getElementById('nav-admin-icon');
@@ -974,7 +1024,7 @@
             if (hubDesc) hubDesc.innerText = "Check practice schedules, match dates, and administrator updates below.";
 
             buildCalendarGrid();
-            openNotificationModal("🔒 SESSION TERMINATED", "You have successfully logged out of the administrator command dashboard.");
+            openNotificationModal("🔒 SESSION TERMINATED", "You have successfully logged out.");
         }
 
         function triggerAdminCalendarForm(key, dayNum, textData) {
@@ -984,15 +1034,15 @@
             formModal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4';
             formModal.innerHTML = `
                 <div class="max-w-md w-full bg-caballitos-dark border border-caballitos-purple rounded-2xl p-6 space-y-4 shadow-2xl">
-                    <h3 class="font-orbitron font-bold text-white text-base">Adjust Sept ${dayNum}, 2026</h3>
+                    <h3 class="font-orbitron font-bold text-white text-base">Adjust Day ${dayNum} Schedule</h3>
                     <form onsubmit="commitCalendarStorageOverride(event, '${key}')" class="space-y-4">
                         <div>
-                            <label class="block text-xs text-slate-400 font-semibold mb-1">Schedule Notes / Context Details</label>
+                            <label class="block text-xs text-slate-400 font-semibold mb-1">Schedule Notes / Details</label>
                             <input id="calendar-form-note-field" type="text" value="${textData}" class="w-full bg-caballitos-darker border border-slate-700 rounded-xl px-4 py-2 text-white text-sm focus:outline-none" />
                         </div>
                         <div class="flex gap-2 justify-end">
-                            <button type="button" onclick="eraseCalendarStorageNote('${key}')" class="px-4 py-2 rounded-xl bg-red-600/20 text-red-400 font-orbitron font-bold text-xs uppercase">CLEAR CELL</button>
-                            <button type="submit" class="px-4 py-2 rounded-xl bg-caballitos-purple text-white font-orbitron font-bold text-xs uppercase">SAVE RECORD</button>
+                            <button type="button" onclick="eraseCalendarStorageNote('${key}')" class="px-4 py-2 rounded-xl bg-red-600/20 text-red-400 font-orbitron font-bold text-xs uppercase">CLEAR</button>
+                            <button type="submit" class="px-4 py-2 rounded-xl bg-caballitos-purple text-white font-orbitron font-bold text-xs uppercase">SYNC LIVE</button>
                         </div>
                     </form>
                 </div>`;
@@ -1007,21 +1057,23 @@
             } else {
                 delete storageScheduleData[storageKey];
             }
-            localStorage.setItem('caballitos_calendar_2026', JSON.stringify(storageScheduleData));
-            clearActiveModalDOMElement();
-            buildCalendarGrid();
-            openNotificationModal("✅ DATABASE SYNCHRONIZED", "The local calendar schedule repository notes have been successfully revised.");
+
+            // Push to Firebase so all users see schedule updates live instantly
+            window.dbSet(window.dbRef(window.dbInstance, 'caballitos/schedule'), storageScheduleData).then(() => {
+                clearActiveModalDOMElement();
+                openNotificationModal("✅ LIVE SYNC SUCCESS", "Monday/Tuesday schedule updates pushed live to all visitors.");
+            });
         }
 
         function eraseCalendarStorageNote(storageKey) {
             delete storageScheduleData[storageKey];
-            localStorage.setItem('caballitos_calendar_2026', JSON.stringify(storageScheduleData));
-            clearActiveModalDOMElement();
-            buildCalendarGrid();
-            openNotificationModal("🗑️ RECORD EXPUNGED", "The calendar schedule data note cell parameter has been wiped clean.");
+            window.dbSet(window.dbRef(window.dbInstance, 'caballitos/schedule'), storageScheduleData).then(() => {
+                clearActiveModalDOMElement();
+                openNotificationModal("🗑️ RECORD CLEARED", "Schedule note wiped clean across all screens.");
+            });
         }
 
-        function openNotificationModal(headerTitle, messageDesc) {	
+        function openNotificationModal(headerTitle, messageDesc) {    
             clearActiveModalDOMElement();
             const responseModal = document.createElement('div');
             responseModal.id = 'global-security-modal';
