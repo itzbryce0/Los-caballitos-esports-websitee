@@ -37,20 +37,19 @@
         }
     </script>
 
-    <!-- Firebase SDKs for Real-Time Live Sync -->
+    <!-- Firebase SDKs & Your Exact Config -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
         import { getDatabase, ref, set, onValue, update } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-        // TODO: Replace with your actual Firebase project config credentials if needed
         const firebaseConfig = {
-            apiKey: "AIzaSyDo1GZq0HTbSuiXm9yCGWErFheNncDtMj0",
+            apiKey: "AIzaSyDo1GZq8HTbSuiXm9yCGWErFheNncDtMj0",
             authDomain: "los-caballitos-esports.firebaseapp.com",
             databaseURL: "https://los-caballitos-esports-default-rtdb.firebaseio.com",
             projectId: "los-caballitos-esports",
-            storageBucket: "Ylos-caballitos-esports.firebasestorage.app",
+            storageBucket: "los-caballitos-esports.firebasestorage.app",
             messagingSenderId: "607491779169",
-            appId: "1:607491779169:web:8a5c33bfcdd70f9b595820"
+            appId: "1:607491779169:web:8a5c33bfddd70f9b595820"
         };
 
         const app = initializeApp(firebaseConfig);
@@ -204,40 +203,53 @@
                 <div id="news-admin-action" class="hidden">
                     <button onclick="toggleNewsEditDrawer()" class="px-5 py-2.5 rounded-xl bg-caballitos-lightgreen/20 hover:bg-caballitos-lightgreen/30 border border-caballitos-lightgreen text-caballitos-brightgreen font-orbitron font-bold text-xs uppercase tracking-wider transition-all flex items-center space-x-2 shadow-md">
                         <i class="fa-solid fa-pen-to-square"></i>
-                        <span>Update Current News</span>
+                        <span>Manage & Delete News</span>
                     </button>
                 </div>
             </div>
 
             <!-- Admin Slide Input Drawer Container -->
             <div id="news-edit-drawer" class="max-h-0 overflow-hidden transition-all duration-500 ease-in-out mb-0">
-                <div class="card-glass rounded-2xl p-6 border border-caballitos-purple/60 space-y-4 shadow-2xl mb-6">
+                <div class="card-glass rounded-2xl p-6 border border-caballitos-purple/60 space-y-6 shadow-2xl mb-6">
                     <h3 class="font-orbitron font-bold text-sm text-caballitos-brightgreen uppercase tracking-wide flex items-center">
-                        <i class="fa-solid fa-sliders mr-2"></i> Publish Live News Carousel Slide
+                        <i class="fa-solid fa-sliders mr-2"></i> Manage Active News Broadcasts
                     </h3>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-orbitron font-bold text-slate-300 uppercase mb-1">Classification Tag</label>
-                            <select id="news-tag-select" class="w-full bg-caballitos-darker border border-slate-700 rounded-xl px-4 py-2.5 text-white text-xs font-semibold focus:border-caballitos-purple focus:outline-none">
-                                <option value="Club update">Club update</option>
-                                <option value="Schedule update">Schedule update</option>
-                                <option value="Competition update">Competition update</option>
-                                <option value="News">News</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-orbitron font-bold text-slate-300 uppercase mb-1">Headline Title</label>
-                            <input id="news-title-input" type="text" placeholder="Enter headline title..." class="w-full bg-caballitos-darker border border-slate-700 rounded-xl px-4 py-2.5 text-white text-xs font-semibold focus:border-caballitos-purple focus:outline-none" />
+                    
+                    <!-- Existing Slides Manager List -->
+                    <div class="space-y-2 border-b border-slate-800 pb-4">
+                        <label class="block text-xs font-orbitron font-bold text-slate-300 uppercase">Existing Active News Slides</label>
+                        <div id="admin-news-manager-list" class="space-y-2 max-h-40 overflow-y-auto pr-2">
+                            <!-- Populated dynamically -->
                         </div>
                     </div>
-                    <div>
-                        <label class="block text-xs font-orbitron font-bold text-slate-300 uppercase mb-1">Description Details</label>
-                        <textarea id="news-desc-input" rows="3" placeholder="Enter comprehensive notice text..." class="w-full bg-caballitos-darker border border-slate-700 rounded-xl px-4 py-2.5 text-white text-xs font-semibold focus:border-caballitos-purple focus:outline-none"></textarea>
-                    </div>
-                    <div class="flex justify-end">
-                        <button onclick="commitAdminNewsSlide()" class="px-6 py-2.5 rounded-xl bg-caballitos-lightgreen text-caballitos-darker font-orbitron font-bold text-xs uppercase tracking-wider hover:bg-caballitos-brightgreen transition-all shadow-md">
-                            Commit Live Broadcast
-                        </button>
+
+                    <!-- Add New Slide Form -->
+                    <div class="space-y-4">
+                        <h4 class="text-xs font-orbitron font-bold text-caballitos-brightgreen uppercase">Publish New Broadcast Slide</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-orbitron font-bold text-slate-300 uppercase mb-1">Classification Tag</label>
+                                <select id="news-tag-select" class="w-full bg-caballitos-darker border border-slate-700 rounded-xl px-4 py-2.5 text-white text-xs font-semibold focus:border-caballitos-purple focus:outline-none">
+                                    <option value="Club update">Club update</option>
+                                    <option value="Schedule update">Schedule update</option>
+                                    <option value="Competition update">Competition update</option>
+                                    <option value="News">News</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-orbitron font-bold text-slate-300 uppercase mb-1">Headline Title</label>
+                                <input id="news-title-input" type="text" placeholder="Enter headline title..." class="w-full bg-caballitos-darker border border-slate-700 rounded-xl px-4 py-2.5 text-white text-xs font-semibold focus:border-caballitos-purple focus:outline-none" />
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-orbitron font-bold text-slate-300 uppercase mb-1">Description Details</label>
+                            <textarea id="news-desc-input" rows="3" placeholder="Enter comprehensive notice text..." class="w-full bg-caballitos-darker border border-slate-700 rounded-xl px-4 py-2.5 text-white text-xs font-semibold focus:border-caballitos-purple focus:outline-none"></textarea>
+                        </div>
+                        <div class="flex justify-end">
+                            <button onclick="commitAdminNewsSlide()" class="px-6 py-2.5 rounded-xl bg-caballitos-lightgreen text-caballitos-darker font-orbitron font-bold text-xs uppercase tracking-wider hover:bg-caballitos-brightgreen transition-all shadow-md">
+                                Commit Live Broadcast
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -514,6 +526,7 @@
                 if (data) {
                     customNewsSlideData = data;
                     renderLiveNewsSlide();
+                    renderAdminNewsManagerList();
                     igniteNewsAutoPlayLoop();
                 }
             });
@@ -575,12 +588,56 @@
             const drawer = document.getElementById('news-edit-drawer');
             if (!drawer) return;
             if (drawer.style.maxHeight === '0px' || !drawer.style.maxHeight) {
+                renderAdminNewsManagerList();
                 drawer.style.maxHeight = drawer.scrollHeight + 'px';
                 drawer.style.marginBottom = '1.5rem';
             } else {
                 drawer.style.maxHeight = '0px';
                 drawer.style.marginBottom = '0px';
             }
+        }
+
+        function renderAdminNewsManagerList() {
+            const container = document.getElementById('admin-news-manager-list');
+            if (!container) return;
+            container.innerHTML = '';
+
+            if (customNewsSlideData.length === 0) {
+                container.innerHTML = '<p class="text-xs text-slate-500 italic">No active news slides.</p>';
+                return;
+            }
+
+            customNewsSlideData.forEach((slide, idx) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'flex items-center justify-between bg-caballitos-darker p-3 rounded-xl border border-slate-800 text-xs';
+                itemDiv.innerHTML = `
+                    <div class="truncate pr-2">
+                        <span class="text-caballitos-brightgreen font-bold">[${slide.tag}]</span> <span class="text-white font-semibold">${slide.title}</span>
+                    </div>
+                    <button onclick="deleteNewsSlide(${idx})" class="px-3 py-1 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 font-orbitron font-bold uppercase text-[10px] shrink-0">
+                        Delete
+                    </button>
+                `;
+                container.appendChild(itemDiv);
+            });
+        }
+
+        function deleteNewsSlide(index) {
+            if (customNewsSlideData.length <= 1) {
+                openNotificationModal("⚠️ ACTION BLOCKED", "You must keep at least one active news slide in the rotation.");
+                return;
+            }
+
+            customNewsSlideData.splice(index, 1);
+            if (activeNewsSlideIndex >= customNewsSlideData.length) {
+                activeNewsSlideIndex = customNewsSlideData.length - 1;
+            }
+
+            window.dbSet(window.dbRef(window.dbInstance, 'caballitos/news'), customNewsSlideData).then(() => {
+                renderLiveNewsSlide();
+                renderAdminNewsManagerList();
+                openNotificationModal("🗑️ SLIDE DELETED", "News broadcast removed successfully from live feed.");
+            });
         }
 
         function commitAdminNewsSlide() {
@@ -595,10 +652,10 @@
 
             customNewsSlideData.push({ tag: selectedTag, title: titleInput, desc: descInput });
 
-            // Push to Firebase so it updates live for all connected visitors instantly
             window.dbSet(window.dbRef(window.dbInstance, 'caballitos/news'), customNewsSlideData).then(() => {
                 activeNewsSlideIndex = customNewsSlideData.length - 1;
                 renderLiveNewsSlide();
+                renderAdminNewsManagerList();
                 toggleNewsEditDrawer();
                 document.getElementById('news-title-input').value = '';
                 document.getElementById('news-desc-input').value = '';
@@ -695,14 +752,12 @@
             });
         }
 
-        // --- DYNAMIC REAL-WORLD CALENDAR ENGINE (MONDAY & TUESDAY FOCUSED) ---
         function buildCalendarGrid() {
             const grid = document.getElementById('calendar-grid');
             const headerTitle = document.getElementById('calendar-header-title');
             if (!grid) return;
             grid.innerHTML = '';
 
-            // Automatically use the current real-world month and year
             const now = new Date();
             const currentYear = now.getFullYear();
             const currentMonthIndex = now.getMonth(); 
@@ -713,13 +768,11 @@
                 headerTitle.innerHTML = `${monthString} <span class="text-caballitos-brightgreen">${currentYear}</span>`;
             }
 
-            // Get total days in the current real-world month
             const totalDaysInMonth = new Date(currentYear, currentMonthIndex + 1, 0).getDate();
-            const firstDayOfWeek = new Date(currentYear, currentMonthIndex, 1).getDay(); // 0 = Sun, 1 = Mon, 2 = Tue, etc.
+            const firstDayOfWeek = new Date(currentYear, currentMonthIndex, 1).getDay();
 
             let cellCount = 0;
 
-            // Padding cells from previous month to align the first day correctly under Sun-Sat headers
             for (let i = 0; i < firstDayOfWeek; i++) {
                 const emptyCell = document.createElement('div');
                 emptyCell.className = 'min-h-[100px] sm:min-h-[125px] p-2.5 rounded-xl border bg-caballitos-darker/20 border-slate-900/60 text-slate-700';
@@ -728,7 +781,6 @@
                 cellCount++;
             }
 
-            // Real month days (Mon = 1, Tue = 2)
             for (let day = 1; day <= totalDaysInMonth; day++) {
                 const dayOfWeekIndex = new Date(currentYear, currentMonthIndex, day).getDay();
                 const isMonOrTue = (dayOfWeekIndex === 1 || dayOfWeekIndex === 2);
@@ -763,13 +815,11 @@
                     }
                     dataDiv.innerText = noteVal;
                 } else if (isMonOrTue) {
-                    // Default placeholder for active Monday / Tuesday practice slots
                     dataDiv.className += ' px-1.5 py-1 rounded bg-caballitos-purple/10 border border-caballitos-purple/20 text-slate-400 italic';
                     dataDiv.innerText = dayOfWeekIndex === 1 ? 'Meeting: 3:50 PM - 5:20 PM' : 'Practice: 3:50 PM - 5:20 PM';
                 }
                 cellElement.appendChild(dataDiv);
 
-                // Clicking only enabled on Mondays and Tuesdays for admins
                 if (isMonOrTue) {
                     cellElement.onclick = () => {
                         if (!isAdminLoggedIn) {
@@ -1058,7 +1108,6 @@
                 delete storageScheduleData[storageKey];
             }
 
-            // Push to Firebase so all users see schedule updates live instantly
             window.dbSet(window.dbRef(window.dbInstance, 'caballitos/schedule'), storageScheduleData).then(() => {
                 clearActiveModalDOMElement();
                 openNotificationModal("✅ LIVE SYNC SUCCESS", "Monday/Tuesday schedule updates pushed live to all visitors.");
